@@ -7,7 +7,7 @@ const fs = require('fs');
 
 fs.open('./src/config/env.js', 'w', function(err, fd) {
     const buf = 'export default "development";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
+    fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});
 });
 
 module.exports = merge(webpackBaseConfig, {
@@ -19,11 +19,10 @@ module.exports = merge(webpackBaseConfig, {
         proxy:{
             '/wh/*':
             {
-                target: 'http://localhost:8090',  
+                target: 'http://127.0.0.1:80',
                 secure: false  
             }
-        },
-        port: 8091
+        }
     },
     output: {
         publicPath: '/dist/',

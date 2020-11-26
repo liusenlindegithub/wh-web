@@ -34,13 +34,18 @@
                         <li>
                             <div class="name-password-error" v-if="this.$store.state.ifSign">用户名或密码错误</div>
                             <dl>
+                                <FormItem prop="userEmail" >
+                                    <Input v-model="formLogin.userEmail" type="text" placeholder="登录邮箱" >
+                                        <Icon type="ios-person-outline" slot="prepend" ></Icon>
+                                    </Input>
+                                </FormItem>
                                 <FormItem prop="userName" >
                                     <Input v-model="formLogin.userName" type="text" placeholder="登录名" >
                                         <Icon type="ios-person-outline" slot="prepend" ></Icon>
                                     </Input>
                                 </FormItem>
                                 <FormItem prop="password">
-                                    <Input v-model="formLogin.password" type="password" placeholder="密码" >
+                                    <Input v-model="formLogin.password" type="password" placeholder="邮箱密码" >
                                     <Icon type="ios-locked-outline" slot="prepend"></Icon></Input>
                                 </FormItem>
                                 <FormItem>
@@ -51,6 +56,35 @@
                     </ul>
                 </div>
             </Form>
+<!--            <Form ref="formLogin" :model="formReg" :rules="ruleReg">-->
+<!--                <div class="wrap_conter">-->
+<!--                    <ul>-->
+<!--                        <li><h2>用户注册</h2></li>-->
+<!--                        <li>-->
+<!--                            <div class="name-password-error" v-if="this.$store.state.ifSign">用户名或密码错误</div>-->
+<!--                            <dl>-->
+<!--                                <FormItem prop="userEmail" >-->
+<!--                                    <Input v-model="formReg.userEmail" type="text" placeholder="登录邮箱" >-->
+<!--                                        <Icon type="ios-person-outline" slot="prepend" ></Icon>-->
+<!--                                    </Input>-->
+<!--                                </FormItem>-->
+<!--                                <FormItem prop="userName" >-->
+<!--                                    <Input v-model="formReg.userName" type="text" placeholder="用户名" >-->
+<!--                                        <Icon type="ios-person-outline" slot="prepend" ></Icon>-->
+<!--                                    </Input>-->
+<!--                                </FormItem>-->
+<!--                                <FormItem prop="password">-->
+<!--                                    <Input v-model="formReg.password" type="password" placeholder="邮箱密码" >-->
+<!--                                        <Icon type="ios-locked-outline" slot="prepend"></Icon></Input>-->
+<!--                                </FormItem>-->
+<!--                                <FormItem>-->
+<!--                                    <Button type="primary" @click="userReg('formReg')" style="width: 250px">注册</Button>-->
+<!--                                </FormItem>-->
+<!--                            </dl>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </Form>-->
         </div>
     </div>
 </template>
@@ -59,8 +93,10 @@
         data(){
             return {
                 formLogin:{
+                    userEmail: null,
                     userName: null,
                     password: null
+
                 },
                 ruleLogin: {
                         userName: [
@@ -68,18 +104,74 @@
                         ],
                         password: [
                             { required: true, message: '请填写密码', trigger: 'blur' },
+                        ],
+                        userEmail: [
+                        { required: true, message: '请填写邮箱账号', trigger: 'blur' },
                         ]
-                }
+                },
+                // formReg:{
+                //     userEmail: null,
+                //     userName: null,
+                //     password: null
+                // },
+                // ruleReg: {
+                //     userEmail: [
+                //         { required: true, message: '请填写邮箱账号', trigger: 'blur' }
+                //     ],
+                //     password: [
+                //         { required: true, message: '请填写密码', trigger: 'blur' },
+                //     ],
+                //     userName: [
+                //         { required: true, message: '请填写用户名', trigger: 'blur' }
+                //     ],
+                // }
             }
         },
         methods: {
             login(formLogin){
                 this.$refs[formLogin].validate((valid) => {
                     if(valid){
-                        this.$store.dispatch('users/userLogin',{"user_name":this.formLogin.userName,"user_password":this.formLogin.password,"router":this.$router});
+                        console.log(nakamajs)
+                        var client = new nakamajs.Client("defaultkey", "109.244.192.76", "7350");
+                        client.ssl = false;
+                        console.info("Successfully authenticated:", client);
+
+                        console.log(this.formLogin.userEmail)
+                        console.log(this.formLogin.userName)
+                        const session = client.authenticateEmail({ email: this.formLogin.userEmail, password: this.formLogin.password, create: true, username: this.formLogin.userName })
+
+                        session.then(resp=>{
+                            if (resp){
+                                console.log(resp)
+                                console.info("Successfully authenticateEmail:", session);
+
+                            }
+                        })
+                        this.$router.push({ path: '/base' })
                     }
                 })
-            }
+            },
+
+            // userReg(formReg){
+            //     this.$refs[formReg].validate((valid) => {
+            //         if(valid){
+            //             console.log(nakamajs)
+            //             var client = new nakamajs.Client("defaultkey", "109.244.192.76", "7350");
+            //             client.ssl = false;
+            //             console.info("Successfully authenticated:", client);
+            //
+            //             const session = client.authenticateEmail({ email: this.formReg.userEmail, password: this.formReg.password, create: true, username: this.formReg.userName })
+            //
+            //             session.then(resp=>{
+            //                 if (resp){
+            //                     console.log(resp)
+            //                     console.info("Successfully authenticateEmail:", session);
+            //                     this.$router.push({ path: '/base' })
+            //                 }
+            //             })
+            //         }
+            //     })
+            // }
         }
     };
 </script>

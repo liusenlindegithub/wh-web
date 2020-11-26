@@ -9,11 +9,7 @@ util.title = function(title) {
     window.document.title = title;
 };
 
-const ajaxUrl = env === 'development' ?
-    'http://127.0.0.1:8888' :
-    env === 'production' ?
-    'https://www.url.com' :
-    'https://debug.url.com';
+const ajaxUrl = "109.244.192.76:7350";
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import iView from 'iview';
+import iView from 'view-design';
 import Util from './libs/util';
 
 Vue.use(VueRouter);
@@ -23,13 +23,6 @@ const routers = [
 	        title: 'smallsnail-wh'
 	    },
 	    component: (resolve) => require(['./views/index.vue'], resolve)
-	},
-	{
-	    path: '/test',
-	    meta: {
-	        title: 'test'
-	    },
-	    component: (resolve) => require(['./views/test.vue'], resolve)
 	},
 	{
 	    path: '/authorization',
@@ -77,31 +70,7 @@ const routers = [
                 meta: {
                     title:"role"
                 }
-	    	},
-	    	{
-	    		path: 'test4',
-                name: 'test4',
-                component: (resolve) => require(['./views/test/test4.vue'], resolve),
-                meta: {
-                    title:"test4"
-                }
-	    	},
-	    	{
-	    		path: 'test5',
-                name: 'test5',
-                component: (resolve) => require(['./views/test/test5.vue'], resolve),
-                meta: {
-                    title:"test5"
-                }
-	    	},
-	    	{
-	    		path: 'test6',
-                name: 'test6',
-                component: (resolve) => require(['./views/test/test6.vue'], resolve),
-                meta: {
-                    title:"test6"
-                }
-	    	},
+	    	}
 	    ]
 	}
 ];

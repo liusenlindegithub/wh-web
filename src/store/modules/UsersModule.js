@@ -1,5 +1,5 @@
 import axios from 'axios';
-import iView from 'iview';
+import iView from 'view-design';
 export default {
     namespaced: true,
     state:{
